@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"    content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author"      content="Sergey Pozhilov (GetTemplate.com)">
+	
+	<title>Data Cube Visualization </title>
+
+	<link rel="shortcut icon" href="assets/images/gt_favicon.png">
+	
+	<link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+
+	<!-- Custom styles for our template -->
+	<link rel="stylesheet" href="assets/css/bootstrap-theme.css" media="screen" >
+	<link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+        <!-- On charge le code JavaScript de la librairie leaflet -->
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+
+    <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js"></script>
+
+        <!-- On charge notre code JavaScript -->
+   <script type="text/javascript" src="map.js"></script>
+
+   <!-- Leaflet -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <!-- leaflet-plugin -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"
+    />
+
+    <!-- jQuery UI -->
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"
+    />
+<!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- leaflet-plugin -->
+    <script src="https://unpkg.com/leaflet-hash@0.2.1/leaflet-hash.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<!-- jQuery & bootstrap4 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      async
+    ></script>
+    <!-- d3.js -->
+    <script src="https://d3js.org/d3.v6.min.js" async></script>
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="assets/js/html5shiv.js"></script>
+	<script src="assets/js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-inverse navbar-fixed-top headroom" >
+		<div class="container">
+			<div class="navbar-header">
+				<!-- Button for smallest screens -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+				<a class="navbar-brand" href="index.html"><img src="assets/images/loo.png" style="width:230px"></a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav pull-right">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="about.html">About</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Cube Manager <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li class="active"><a href="sidebar-left.html">Data Cube Visualization</a></li>
+							<li><a href="sidebar-right.html">Right Sidebar</a></li>
+						</ul>
+					</li>
+					<li><a href="contact.html">Contact</a></li>
+					<li><a class="btn" href="signin.html">SIGN IN / SIGN UP</a></li>
+				</ul>
+			</div><!--/.nav-collapse -->
+		</div>
+	</div> 
+	<!-- /.navbar -->
+
+	<header id="head" class="secondary"></header>
+
+	<!-- container -->
+	<div class="container1">
+		
+		<ol class="breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li class="active">Data Cube Visualization</li>
+		</ol>
+
+		<div class="row">
+			
+			<!-- Sidebar -->
+			<aside class="col-md-4 sidebar sidebar-left" style="width:px">
+            <form>
+            <h3>Select the Period</h3>
+            <hr>
+            <div class="form-group"><label class="control-label" for="id_start_date">Start Date</label><input type="date" name="start_date" class="form-control datepicker field-divided onchange_filter hasDatepicker" placeholder="" value="2015-01-01" onchange="update_shown_cubes()" title="" required="" id="id_start_date"></div>
+           <div class="form-group"><label class="control-label" for="id_end_date">End Date</label><input type="date" name="end_date" class="form-control datepicker field-divided onchange_filter hasDatepicker" placeholder="01/02/2015" value="2015-02-01" onchange="update_shown_cubes()" title="" required="" id="id_end_date"></div>
+           
+           
+          <!--<input type="date" id="start" name="trip-start" value="01/01/2015" placeholder="Start Date" class="form-control datepicker field-divided onchange_filter hasDatepicker" >
+          	<input type="date" id="start" name="trip-start" value="02/01/2015" placeholder="Start Date" class="form-control datepicker field-divided onchange_filter hasDatepicker" >-->
+          
+		
+              <!-- control parameters -->
+
+               <h3>BBOX</h3>
+               <hr>
+             
+              <div class="col-6">
+              <div class="form-group">
+                <label for="lat_min">West</label>
+                <input type="text" id="lat_min" class="form-control" />
+              </div>
+             </div>
+             <div class="col-6">
+              <div class="form-group">
+                <label for="lat_max">South</label>
+                <input type="text" id="lat_max" class="form-control" />
+              </div>
+             </div>
+             <div class="col-6">
+              <div class="form-group">
+                <label for="lng_min">East</label>
+                <input type="text" id="lng_min" class="form-control" />
+              </div>
+             </div>
+             <div class="col-6">
+              <div class="form-group">
+                <label for="lng_max">North</label>
+                <input type="text" id="lng_max" class="form-control" />
+              </div>
+            </div>
+          
+            
+             <button  class="btn btn-info" ><i class="fa fa-search"></i> Search</button>
+             </form>
+			</aside>
+			<!-- /Sidebar -->
+
+			<!-- Article main content -->
+		 <article class="col-md-8 maincontent"  >
+			<!--	<header class="page-header">
+					<h1 class="page-title">Lorem ipsum dolor sit amet, consectetur.</h1>
+			    </header>-->
+				<div id="map"></div>
+				<!--<div class="col-8 h-100">
+           Leaflet 
+          <div class="row h-100 m-4">
+            <div class="col-12 h-75 m-4">
+              <div id="map" class="h-100"></div>
+            </div>
+          </div>
+          </div>-->
+			</article>	
+		</div>
+	</div>	<!-- /container -->
+	
+
+	<footer id="footer" class="top-space">
+
+		
+
+		<div class="footer2">
+			<div class="container">
+				<div class="row">
+					
+					<div class="col-md-6 widget">
+						<div class="widget-body">
+							<p class="simplenav">
+								<a href="#">Home</a> | 
+								<a href="about.html">About</a> |
+								<a href="sidebar-left.html">Data Cube Visualization</a> |
+								<a href="contact.html">Contact</a> |
+								<b><a href="signup.html">Sign up</a></b>
+							</p>
+						</div>
+					</div>
+
+					<div class="col-md-6 widget">
+						<div class="widget-body">
+							<p class="text-right">
+								Copyright 2021, Tunisian data cube team
+							</p>
+						</div>
+					</div>
+
+				</div> <!-- /row of widgets -->
+			</div>
+		</div>
+
+	</footer>	
+		
+
+
+
+
+	<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="assets/js/headroom.min.js"></script>
+	<script src="assets/js/jQuery.headroom.min.js"></script>
+	<script src="assets/js/template.js"></script>
+	<!--<script src="./main.js"></script>-->
+
+</body>
+</html>
